@@ -1,18 +1,14 @@
 import React, {Component} from 'react';
 import{
     StyleSheet,
-    Animated, 
-    ScrollView,
     Text,
     View,
-    Header,
     TextInput,
     Button,
+    Alert,
     TouchableOpacity,
-    KeyboardAvoidingView
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Logo from '../components/Logo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
@@ -37,43 +33,70 @@ export default class RegisterScreen extends Component {
         ) 
     }
 
+    handleRegister = () => {
+        this.setState({
+            currentUser: {...this.state.currentUser,
+            loggedIn: true
+            }
+        })
+      }
+      checkRegister = () => {
+        if (!this.validateForm()){
+            Alert.alert(
+                'Register Error',
+                'Please fill all both fields correctly.'
+            )
+        }
+        if (this.state.registerClicked === false){
+            this.registerUser()
+        }
+    }
     registerUser = async (e) => {
         console.log("register user hit")
         const validatedForm = this.validateForm()
-        if(validatedForm){
-        const register = await fetch('http://capstoneeventapp.herokuapp.com/users', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify(this.state),
-            headers: {
-                'Content-Type': 'application/json'
+        if (this.state.confirmPassword != this.state.password){
+            alert("Passwords do not match. \n Please try again.");
+        }else{
+            if(validatedForm){
+                this.setState({
+                    registerClicked: true
+                })
+            const register = await fetch('http://capstoneeventapp.herokuapp.com/users', {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify(this.state),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            this.handleRegister();
+            // console.log("register", register)
+            const parsedRegister = await register.json()
+            console.log('response from register: ', await parsedRegister)
+            if (register.status === 200){
+                this.setState({
+                currentUser: parsedRegister
+                })        
+                console.log("Successfuly Registered")
+                console.log("currentUser: ", await this.state.currentUser)
+                this.props.navigation.navigate('InterestedIn',{currentUser: this.state.currentUser});    
+            } else {
+                Alert.alert(
+                    'Email Address Already Registered',
+                    // 'Please '
+                )
+                console.log("Ahh, that's not it!")
             }
-        })
-        // console.log("register", register)
-        const parsedRegister = await register.json()
-        console.log('response from register: ', await parsedRegister)
-        if (register.status === 200){
-            this.setState({
-              currentUser: parsedRegister
-            })        
-            console.log("Successfuly Registered")
-            console.log("currentUser: ", await this.state.currentUser)
-            this.props.navigation.navigate('InterestedIn');    
-          } else {
-            console.log("Ahh, that's not it!")
-          }
-        }   
+            }
+        }
     }
 
     render(){
         const {navigate} = this.props.navigation;
-        // console.log("register page")
         return(
-
             <LinearGradient colors={['#9acbeb', '#edf1fa', '#9acbeb']} style={styles.linearGradient}>
-            <KeyboardAwareScrollView contentContainerStyle={styles.contentContainer}>
-                {/* <ScrollView 
-                contentContainerStyle={styles.contentContainer}> */}
+            <KeyboardAwareScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+            <Text style={styles.logotext}>{'Make new friends \n doing what you love'}</Text>
                     <TextInput 
                         style={styles.inputbox} 
                         autoCapitalize="none" 
@@ -125,8 +148,7 @@ export default class RegisterScreen extends Component {
                         onPress={() => navigate('Login', {screen: 'Login'}) }
                     />
                     </View>
-                {/* </ScrollView> */}
-            {/* </View> */}
+
             </KeyboardAwareScrollView>
             </LinearGradient>
         )
@@ -141,10 +163,23 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
     },
+    text: {
+        fontSize: 30,
+        marginTop: '24%',
+        textAlign: 'center',
+        color: "#019bbe",
+    },
     linearGradient: {
         flex: 1,
         paddingLeft: 15,
         paddingRight: 15,
+    },
+    logotext: {
+        fontSize: 30,
+        marginTop: '15%',
+        marginBottom: '-15%',
+        textAlign: 'center',
+        color: "#019bbe",
     },
     touchcontainer: {
         flex: 1,
@@ -158,7 +193,7 @@ const styles = StyleSheet.create({
         borderRadius: 28,
         margin: '1%',
         padding: 12,
-        bottom: "-23%",
+        bottom: "-20%",
         shadowColor: "#002F56",
         shadowOffset: {
             width: 0,
@@ -178,7 +213,7 @@ const styles = StyleSheet.create({
         textAlign:'center',
         width: '89%',
         position: 'absolute',
-        bottom: 98,
+        bottom: 50,
         shadowColor: "#002F56",
         shadowOffset: {
             width: 0,
@@ -201,7 +236,7 @@ const styles = StyleSheet.create({
     bottomView: {
         // height: 650,
         // width: 
-        bottom: 55
+        bottom: 25
 
     }
 })

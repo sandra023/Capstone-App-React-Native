@@ -7,16 +7,11 @@ import {
   ScrollView,
   Linking,
   Button,
-  TouchableHighlight,
   TouchableOpacity
 } from 'react-native';
 import {Dimensions } from "react-native";
-import { WebBrowser } from 'expo-web-browser';
+// import { WebBrowser } from 'expo-web-browser';
 import { Ionicons, Entypo } from '@expo/vector-icons';
-
-
-
-
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -26,27 +21,38 @@ const eventPageWidth = Math.round(Dimensions.get('window').width*.90);
 export default class EventsScreen extends Component {
   constructor(props) {
     super(props);
+    const {params} = props.navigation.state
     this.state = {
+      currentUser: params.currentUser
     };
   }
 
   render() {
+    const {navigation} = this.props;
+    const {state} = this.props.navigation;
+    console.log('this.state from Events',this.state)
+    // console.log("this.props.navigation.state Events,",this.props.navigation.state)
+    // console.log("navigation.state.params.currentuser Events: ",  navigation.state.params.currentUser)
+    // console.log("state.params from events page Events: ", state.params)
+
     return (
       <View style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
+         <ScrollView  
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
             left: 0, 
             right: 0,
             marginRight: 0,
             marginleft: 0,
             alignItems: 'center', 
-          }}>
+            paddingBottom: 80,
+        }}>
      
         <View style={styles.imageContainer}>
+          {/* have to do an api call for posts and take the fisrt one. later it will be by soonest date */}
         <Image 
           // source={
-          //   require('../images/messagesThree.png')
+          //   {this.state.post.eventPhoto}
           // }
           style={styles.eventPhoto}    
         />
@@ -57,6 +63,23 @@ export default class EventsScreen extends Component {
           <Text style={styles.quickInfo}>Where: {}</Text>
         </View>
         <View style={styles.mainInfo}>
+        <View style={styles.interestRowsContainer}>
+            <View style={styles.interestRows}>            
+              {this.state.education === true ? <Image source={require('../images/interestTags/educationTag.png')} style={styles.interestTag}/> : null}
+              {this.state.outdoors === true ? <Image source={require('../images/interestTags/outdoorsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.sports === true ? <Image source={require('../images/interestTags/sportsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.events === true ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.educations === true ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.food === true ? <Image source={require('../images/interestTags/foodTag.png')} style={styles.interestTag}/> : null}
+              {this.state.meditation === true ? <Image source={require('../images/interestTags/meditationTag.png')} style={styles.interestTag}/> : null}
+              {this.state.children === true ? <Image source={require('../images/interestTags/childrenTag.png')} style={styles.interestTag}/> : null}
+              {this.state.travel === true ? <Image source={require('../images/interestTags/travelTag.png')} style={styles.interestTag}/> : null}
+              {this.state.volunteer === true ? <Image source={require('../images/interestTags/volunteerTag.png')} style={styles.interestTag}/> : null}
+              {this.state.art === true ? <Image source={require('../images/interestTags/artTag.png')} style={styles.interestTag}/> : null}
+              {this.state.tech === true ? <Image source={require('../images/interestTags/techTag.png')} style={styles.interestTag}/> : null}
+              {this.state.drink === true ? <Image source={require('../images/interestTags/drinkTag.png')} style={styles.interestTag}/> : null}
+            </View>
+          </View>
           <Text style={styles.aboutEvent}>
           Lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
           sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -119,7 +142,7 @@ export default class EventsScreen extends Component {
                 />
               </TouchableOpacity>
             </View>
-            <Text style={styles.viewMore} onPress={() => navigate('Register', {screen: 'Register'}) }>View More</Text>
+            <Text style={styles.viewMore} onPress={() => navigate('Events', {screen: 'Register'}) }>View More</Text>
           </View>
           <View style={styles.hostedByContainerRow}>
              <Text style={styles.hostByText}>Hosted by: {}</Text> 
@@ -146,19 +169,65 @@ export default class EventsScreen extends Component {
     Linking.openURL('https://google.com');  // {} this will have a variable with linking to the website
   }
 
+  static navigationOptions = ({navigation}) => ({
+    title: 'Events',
+    headerLeft: 
+      <TouchableOpacity onPress={() => {navigation.navigate('ProfileLandingPage',{currentUser: navigation.state.params.currentUser})} } >
+        <Image style={styles.headerLeft} source={require('../images/user-circle.png')} />
+      </TouchableOpacity>,
+    headerRight: 
+    // <TouchableOpacity onPress={() => {navigation.navigate('Profile',{...this.state})} } >
+    <TouchableOpacity onPress={() => {navigation.navigate()} } >
+        <Image style={styles.headerRight} source={require('../images/messages.png')} />
+      </TouchableOpacity>           
+  });
+
 }
+
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 25,
-    // backgroundColor: 'lightgrey',
     bottom: 0,
     width: eventPageWidth,
-    top: '12%', 
+    // top: '12%', 
     alignSelf: 'center',
     flex: 1,
     top: 30, 
     alignItems: 'center',
+  },
+  interestRows: {
+    width: eventPageWidth,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    height: 35,
+    marginBottom: 10,
+    paddingBottom: 10,
+    justifyContent: 'center'
+  },
+  interestRowsContainer: {
+    paddingVertical: 10,
+  },
+  interestTag: {
+    height: 15,
+    width: '30%',
+    height: '100%',
+    resizeMode: 'contain',
+    marginHorizontal: 4,
+    marginTop: 5,
+  },
+  headerRight:{
+    height: 40,
+    width: 40,
+    marginTop: 55,
+    marginRight: 10,
+    // padding: 20
+  },
+  headerLeft:{
+    height: 35,
+    width: 35,
+    marginTop: 50,
+    marginLeft: 8
   },
   viewMore: {
     alignSelf: 'flex-end',
@@ -270,7 +339,6 @@ const styles = StyleSheet.create({
     height: '10%',
     backgroundColor: '#dce2e6',
     borderRadius: 25
-
   }
 
 })

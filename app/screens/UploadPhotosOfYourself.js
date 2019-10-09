@@ -17,7 +17,10 @@ import * as Permissions from 'expo-permissions';
 export default class UploadPhotosOfYourselfScreen extends Component {
   constructor(props) {
     super(props);
+    const {params} = props.navigation.state
     this.state = {
+      currentUser: params.currentUser,
+      image: null,
       imageOne: null,
       imageTwo: null,
       imageThree: null,
@@ -28,8 +31,13 @@ export default class UploadPhotosOfYourselfScreen extends Component {
   }
 
   render() {
+    const{navigation}=this.props;
     const {navigate} = this.props.navigation;
+    const {state} = this.props.navigation;
+    // console.log("state.params.currentUser", state.params.currentUser)
+    console.log("this.state.currentUser from UploadPhotosOfYourself: ", this.state.currentUser)
 
+    let {image} = this.state
     return (
       <View style={styles.container}>
           <Image 
@@ -43,7 +51,8 @@ export default class UploadPhotosOfYourselfScreen extends Component {
 
       <View style={styles.rowContainer}>
       <TouchableOpacity onPress={() => {
-        alert('You tapped the button!');
+        this._pickImage
+        // alert('You tapped the button!');
         }}style={styles.touchableOpacity}>
         <Image 
           source={
@@ -111,10 +120,8 @@ export default class UploadPhotosOfYourselfScreen extends Component {
       </View>
 
       <TouchableOpacity 
-        onPress={() => navigate('AboutYou', {screen: 'AboutYouScreen'}) }>
-        {/* onPress={() =>  */}
-        {/* navigate('AboutYou', 
-        {screen: 'AboutYou'}) }> */}
+        onPress={() => navigate('AboutYou',{currentUser: this.state.currentUser}) }>
+      
       <Text style={styles.continue} >Continue</Text>
       </TouchableOpacity>
 
@@ -139,7 +146,9 @@ export default class UploadPhotosOfYourselfScreen extends Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      // aspect: [4, 3],
+      aspect: [3, 3],
+
     });
 
     console.log(result);

@@ -12,11 +12,15 @@ import Logo from '../components/Logo';
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
+    const {params} = props.navigation.state
     this.state = {
+      currentUser: params.currentUser
     };
   }
 
   render() {
+    const {navigate} = this.props.navigation
+    console.log('this.state.currentUser from ProfileComplete: ', this.state.currentUser)
     return (
       <View style={styles.container}>
         <LinearGradient colors={['#9acbeb', '#edf1fa', '#9acbeb']} style={styles.linearGradient}>
@@ -29,9 +33,7 @@ class ProfileScreen extends Component {
           style={styles.logo}   
         />     
         <TouchableOpacity 
-          onPress={() => 
-          navigate('ProfileComplete', 
-          {screen: 'ProfileCompleteScreen'}) }>
+          onPress={() => navigate('EventOnboarding', {currentUser: this.state.currentUser}) }>
           <Text style={styles.continue} >Start finding events now!</Text>
         </TouchableOpacity>
     

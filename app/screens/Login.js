@@ -1,32 +1,22 @@
 import React, {Component} from 'react';
 import{
     StyleSheet,
-    Animated, 
-    ScrollView,
     Text,
     View,
-    Header,
     Alert,
     TextInput,
     Button,
     TouchableOpacity,
-    KeyboardAvoidingView
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Logo from '../components/Logo';
-import { FontAwesome } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-// import App from '../../App.js'
-import ProfileScreen from './ProfileComplete';
-
-
   
-const myButton = (
-    <FontAwesome.Button name="facebook" backgroundColor="#3b5998" onPress={this.loginWithFacebook}>
-      Login with Facebook
-    </FontAwesome.Button>
-  );
+// const myButton = (
+//     <FontAwesome.Button name="facebook" backgroundColor="#3b5998" onPress={this.loginWithFacebook}>
+//       Login with Facebook
+//     </FontAwesome.Button>
+// );
 
 
 export default class LoginScreen extends Component {
@@ -34,24 +24,35 @@ export default class LoginScreen extends Component {
     constructor(props){
         super(props);
         this.state = {
-            email: '',
-            password: ''
+            loginClicked: false
         }
     }
 
     validateForm(){
-        console.log('validate form')
         return (
             this.state.email.length > 0 && this.state.password.length > 0
         ) 
     }
 
+    checkLogin = () => {
+        if (!this.validateForm()){
+            Alert.alert(
+                'Login Error',
+                'Please fill in both fields correctly.'
+            )
+        }
+        if (this.state.loginClicked === false){
+            this.loginUser()
+        }
+    }
+
     loginUser = async () => {
-        console.log("loginUserHit")
         const validatedForm = this.validateForm()
         console.log("validated form: ", validatedForm)
         if(validatedForm){
-            console.log("validatedFormHit")
+            this.setState({
+                loginClicked: true
+            })
           const login = await fetch('http://capstoneeventapp.herokuapp.com/auth/login', {
               method: 'POST',
               credentials: 'include',
@@ -61,20 +62,16 @@ export default class LoginScreen extends Component {
               }
           })
           console.log("this.state from login screen: ", this.state)
-        //   console.log("const login passed")
           const parsedLogin = await login.json()
-          console.log('response from login: ', await parsedLogin)
           if (login.status === 200){
               console.log("status === 200")
             this.setState({
               currentUser: parsedLogin,
             });
-            // this.props.currentUser(currentUser)
+            this.handleLogin()
             console.log("Successfuly Logged In")
-            console.log("currentUser: ", await this.state.currentUser)
-            // this.props.navigation.navigate('App',{currentUser: this.state.currentUser });  
-            // this.props.navigation.navigate('EditProfile',{currentUser: this.state.currentUser });  
-            this.props.navigation.navigate('Events',{currentUser: this.state.currentUser });  
+            console.log("Login currentUser: ", await this.state.currentUser)
+            this.props.navigation.navigate('Events',{currentUser: this.state.currentUser});  
 
             } else {
                 Alert.alert(
@@ -89,18 +86,22 @@ export default class LoginScreen extends Component {
           }   
         } 
     }
-
+    handleLogin = () => {
+        this.setState({
+            currentUser: {...this.state.currentUser,
+            loggedIn: true
+            }
+        })
+      }
+    
    
     render(){
-        console.log('login')
         const {navigate} = this.props.navigation;
         return(
-
             <LinearGradient colors={['#9acbeb', '#edf1fa', '#9acbeb']} style={styles.linearGradient}>
-            <KeyboardAwareScrollView contentContainerStyle={{flex:1}}>
+            <KeyboardAwareScrollView contentContainerStyle={{flex:1}} showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
                 <Logo/>
-                
                 <TextInput 
                         style={styles.inputbox} 
                         returnKeyType="next" 
@@ -119,7 +120,7 @@ export default class LoginScreen extends Component {
                         placeholder = "Password"
                     />
                     <TouchableOpacity style={styles.touchcontainer}
-                        onPress={() => this.loginUser()}>
+                        onPress={() => this.checkLogin()}>
                         <Text 
                             style={styles.loginButton}
                             title="Sign Up"
@@ -183,7 +184,6 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     loginButton:{
-        // height: 50,
         backgroundColor: '#002F56',
         borderRadius: 28,
         color: 'white',
@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
         textAlign:'center',
         width: '89%',
         position: 'absolute',
-        // top: 80,
         bottom: -175,
         shadowColor: "#002F56",
         shadowOffset: {
@@ -214,11 +213,5 @@ const styles = StyleSheet.create({
     bottomView: {
         bottom:-185
     },
-    // welcomeContainer: {
-    //     alignItems: 'center',
-    //     marginTop: 10,
-    //     marginBottom: 20,
-    //   },
 
-  
 })

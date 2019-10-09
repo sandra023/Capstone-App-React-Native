@@ -6,29 +6,69 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 class AboutYou extends Component {
   constructor(props) {
     super(props);
+    const {params} = props.navigation.state
     this.state = {
-      aboutOne: '',
-      aboutTwo: '',
-      aboutThree: '',
-      aboutFour: '',
+      currentUser: params.currentUser,
+      // aboutOne: '',
+      // aboutTwo: '',
+      // aboutThree: '',
+      // aboutFour: '',
     };
   }
 
   addAboutMe = async () => {
-    console.log('aboutOne: ', aboutOne)
-    console.log('aboutTwo: ', aboutTwo)
-    console.log('aboutThree: ', aboutThree)
-    console.log('aboutFour: ', aboutFour)
+    console.log("About me hit")
+    console.log('first this.state: ', this.state)
+    this.handleFormChange()
+    console.log('handleFormChangeHit')
+    console.log("updated current user: ", await this.state.currentUser) 
+    console.log("this.state: ", await this.state)   
+      const aboutMe = await fetch('http://capstoneeventapp.herokuapp.com/users/'+this.state.currentUser.id, {
+          method: 'PUT',
+          credentials: 'include',
+          body: JSON.stringify(this.state.currentUser),
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      })
+      if (aboutMe.status === 200){    
+          this.setUser()
+          console.log("Successfuly added About Me")
+          console.log("after register currentUser: ", await this.state.currentUser)
+          this.props.navigation.navigate('ProfileComplete',{currentUser: this.state.currentUser});
+      } else {
+          console.log("Ahh, that's not it!")
+      }
+}
 
+setUser =() => {
+  this.setState({
+  currentUser: this.state.currentUser,
+})
+}
+
+handleFormChange = () => {
+    this.setState({
+        currentUser: {...this.state.currentUser,
+        aboutOne: this.state.aboutOne,
+        aboutTwo: this.state.aboutTwo,
+        aboutThree: this.state.aboutThree,
+        aboutFour: this.state.aboutFour
+        }
+    })
+    console.log("Handle Form Change Hit, currentUser", this.state.currentUser)
   }
 
   render() {
     const {navigate} = this.props.navigation
     return (
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flex:1}}>
       <View style={styles.container}>
         <TextInput 
           multiline={true}
@@ -48,25 +88,24 @@ class AboutYou extends Component {
         <TextInput style={styles.textInputbox}
           multiline={true}
           numberOfLines={4}
-          defaultValue={"My super-power would be... \n"}
+          defaultValue={"My super-power would be ... \n"}
           placeholderTextColor= '#5B616B'
           onChangeText={(text) => this.setState({'aboutThree': text})}
         />
         <TextInput style={styles.textInputbox}
           multiline={true}
           numberOfLines={4}
-          defaultValue= {"Three things to make a good friendship are... \n"}
+          defaultValue= {"Three things to make a good friendship are ... \n"}
           placeholderTextColor= '#5B616B'
           onChangeText={(text) => this.setState({'aboutFour': text})}
         />
 
         <TouchableOpacity 
-          onPress={() => navigate('ProfileComplete', {screen: 'ProfileCompleteScreen'}) }>
-
-            {/* // onPress={() => this.addAboutMe()} */}
-        <Text style={styles.continue} >Continue</Text>
+          onPress={() => this.addAboutMe() }>
+          <Text style={styles.continue} >Continue</Text>
         </TouchableOpacity>
       </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

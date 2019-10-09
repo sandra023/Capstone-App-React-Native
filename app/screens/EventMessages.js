@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-class CreateEventOnboarding extends Component {
+export default class EventMessagesScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,10 +11,8 @@ class CreateEventOnboarding extends Component {
   render() {
     return (
       <View>
-        <Text> CreateEventOnboarding </Text>
+        <Text> NewPage </Text>
       </View>
     );
   }
 }
-
-export default CreateEventOnboarding;

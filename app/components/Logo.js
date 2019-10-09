@@ -10,12 +10,6 @@ export default class Logo extends Component {
     render(){
         return(
             <View style={styles.logoContainer}>
-                {/* <Image 
-                    source={
-                        require('../images/bumblebffevents.png')
-                    }
-                    style={styles.eventsWords}    
-                /> */}
                 <Text style={styles.text}>{'Make new friends \n doing what you love'}</Text>
                 <Image 
                     source={
