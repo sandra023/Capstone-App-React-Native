@@ -30,104 +30,6 @@ export default class UploadPhotosOfYourselfScreen extends Component {
     };
   }
 
-  render() {
-    const{navigation}=this.props;
-    const {navigate} = this.props.navigation;
-    const {state} = this.props.navigation;
-    // console.log("state.params.currentUser", state.params.currentUser)
-    console.log("this.state.currentUser from UploadPhotosOfYourself: ", this.state.currentUser)
-
-    let {image} = this.state
-    return (
-      <View style={styles.container}>
-          <Image 
-              source={require('../images/UploadPhotosOfYourself.png')}
-              style={styles.yourself}
-            />
-            <Image 
-              source={require('../images/proTip.png')}
-              style={styles.proTip}
-            />
-
-      <View style={styles.rowContainer}>
-      <TouchableOpacity onPress={() => {
-        this._pickImage
-        // alert('You tapped the button!');
-        }}style={styles.touchableOpacity}>
-        <Image 
-          source={
-              require('../images/prePhotoIcon.png')
-          }
-          style={styles.icon}    
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => {
-        alert('You tapped the button!');
-        }}style={styles.touchableOpacity}>
-        <Image 
-          source={
-            require('../images/prePhotoIcon.png')
-          }
-          style={styles.icon}    
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => {
-        alert('You tapped the button!');
-        }}style={styles.touchableOpacity}>
-        <Image 
-          source={
-            require('../images/prePhotoIcon.png')
-          }
-          style={styles.icon}    
-        />
-      </TouchableOpacity>
-      </View>
-      <View style={styles.rowContainer}>
-      <TouchableOpacity onPress={() => {
-        alert('You tapped the button!');
-        }}style={styles.touchableOpacity}>
-        <Image 
-          source={
-              require('../images/prePhotoIcon.png')
-          }
-          style={styles.icon}    
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => {
-        alert('You tapped the button!');
-        }}style={styles.touchableOpacity}>
-        <Image 
-          source={
-            require('../images/prePhotoIcon.png')
-          }
-          style={styles.icon}    
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => {
-        alert('You tapped the button!');
-        }}style={styles.touchableOpacity}>
-        <Image 
-          source={
-            require('../images/prePhotoIcon.png')
-          }
-          style={styles.icon}    
-        />
-      </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity 
-        onPress={() => navigate('AboutYou',{currentUser: this.state.currentUser}) }>
-      
-      <Text style={styles.continue} >Continue</Text>
-      </TouchableOpacity>
-
-      </View>
-    );
-  }
 
   componentDidMount() {
     this.getPermissionAsync();
@@ -153,10 +55,106 @@ export default class UploadPhotosOfYourselfScreen extends Component {
 
     console.log(result);
 
+    // if (!result.cancelled) {
+    //   this.setState({ image: result.uri });
+    // }
     if (!result.cancelled) {
-      this.setState({ image: result.uri });
+      this.setState({ [imageNumber]: result.uri });
     }
   };
+
+  savePhotos = () => {
+     this.props.navigation.navigate('AboutYou',{currentUser: this.state.currentUser}) 
+  }
+
+  render() {
+    const{navigation}=this.props;
+    const {navigate} = this.props.navigation;
+    const {state} = this.props.navigation;
+    // console.log("state.params.currentUser", state.params.currentUser)
+    console.log("this.state from UploadPhotosOfYourself: ", this.state)
+
+    
+
+    let {image} = this.state
+    return (
+      <View style={styles.container}>
+          <Image 
+              source={require('../images/UploadPhotosOfYourself.png')}
+              style={styles.yourself}
+            />
+            <Image 
+              source={require('../images/proTip.png')}
+              style={styles.proTip}
+            />
+
+      <View style={styles.rowContainer}>
+      <TouchableOpacity onPress={() => {
+        imageNumber = "imageOne"
+        this._pickImage()
+        // alert('You tapped the button!');
+        }}style={styles.touchableOpacity}>
+        {/* <Image 
+          source={
+              require('../images/prePhotoIcon.png')
+          }
+          style={styles.icon}    
+        /> */}
+        {this.state.imageOne === null ? <Image source={require('../images/prePhotoIcon.png')} style={styles.icon} /> : <Image source={{uri: this.state.imageOne}} style={styles.icon} /> }
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => {
+        imageNumber = "imageTwo"
+        this._pickImage()
+        }}style={styles.touchableOpacity}>
+       
+        {this.state.imageTwo === null ? <Image source={require('../images/prePhotoIcon.png')} style={styles.icon} /> : <Image source={{uri: this.state.imageTwo}} style={styles.icon} /> }
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => {
+        imageNumber = "imageThree"
+        this._pickImage()
+        }}style={styles.touchableOpacity}>
+       
+        {this.state.imageThree === null ? <Image source={require('../images/prePhotoIcon.png')} style={styles.icon} /> : <Image source={{uri: this.state.imageThree}} style={styles.icon} /> }
+      </TouchableOpacity>
+      </View>
+      <View style={styles.rowContainer}>
+      <TouchableOpacity onPress={() => {
+        imageNumber = "imageFour"
+        this._pickImage()
+        }}style={styles.touchableOpacity}>
+    
+        {this.state.imageFour === null ? <Image source={require('../images/prePhotoIcon.png')} style={styles.icon} /> : <Image source={{uri: this.state.imageFour}} style={styles.icon} /> }
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => {
+        imageNumber = "imageFive"
+        this._pickImage()
+        }}style={styles.touchableOpacity}>
+        
+        {this.state.imageFive === null ? <Image source={require('../images/prePhotoIcon.png')} style={styles.icon} /> : <Image source={{uri: this.state.imageFive}} style={styles.icon} /> }
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => {
+        imageNumber = "imageSix"
+        this._pickImage()
+        }}style={styles.touchableOpacity}>
+
+        {this.state.imageSix === null ? <Image source={require('../images/prePhotoIcon.png')} style={styles.icon} /> : <Image source={{uri: this.state.imageSix}} style={styles.icon} /> }
+      </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity 
+        onPress={() => this.savePhotos() }>
+      
+      <Text style={styles.continue} >Continue</Text>
+      </TouchableOpacity>
+
+      </View>
+    );
+  }
+
 }
 
 

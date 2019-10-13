@@ -79,8 +79,6 @@ export default class PickEventPhotoScreen extends Component {
     respondToClick = () => {
         if(this.state[chosenImage] === false && this.state.imageIsChosen === false){
             this.setState({ [chosenImage] : true, imageIsChosen: true, eventPhotoUri: chosenImageUri})
-            console.log("this.state.eventphotoUri: ", this.state.eventPhotoUri)
-            console.log("chosenImageUri", chosenImageUri)
           } else if (this.state[chosenImage] === true && this.state.imageIsChosen === true) {
             this.setState({ [chosenImage] : false, imageIsChosen: false})
           } else if (this.state[chosenImage] === false && this.state.imageIsChosen === true){

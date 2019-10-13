@@ -102,7 +102,7 @@ export default class RegisterScreen extends Component {
                         autoCapitalize="none" 
                         autoCorrect={false} 
                         returnKeyType="next" 
-                        onChangeText={value => this.setState({'firstName': value})}
+                        onChangeText={value => this.setState({'firstName': value, 'registerClicked': false})}
                         placeholder = "First Name"
                     />
                     <TextInput 
@@ -110,7 +110,7 @@ export default class RegisterScreen extends Component {
                         returnKeyType="next" 
                         autoCapitalize="none" 
                         autoCorrect={false} 
-                        onChangeText={value => this.setState({'email': value})}
+                        onChangeText={value => this.setState({'email': value, 'registerClicked': false})}
                         placeholder = "email@address.com"
                     />
                     <TextInput 
@@ -118,7 +118,7 @@ export default class RegisterScreen extends Component {
                         returnKeyType="next" 
                         autoCapitalize="none" 
                         autoCorrect={false} 
-                        onChangeText={value => this.setState({'password': value})}
+                        onChangeText={value => this.setState({'password': value, 'registerClicked': false})}
                         secureTextEntry= {true}
                         placeholder = "Password"
                     />
@@ -127,7 +127,7 @@ export default class RegisterScreen extends Component {
                         returnKeyType="go" 
                         autoCapitalize="none" 
                         autoCorrect={false} 
-                        onChangeText={value => this.setState({'confirmPassword': value})}
+                        onChangeText={value => this.setState({'confirmPassword': value, 'registerClicked': false})}
                         secureTextEntry= {true}
                         placeholder = "Confirm Password"
                     />

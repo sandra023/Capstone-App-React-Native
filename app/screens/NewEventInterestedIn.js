@@ -15,18 +15,18 @@ class NewEventInterestedInScreen extends Component {
 
     this.state = {
       currentUser: params.currentUser,
-      art: false,
-      children: false,
-      drink: false,
-      education: false,
-      events: false,
-      food: false,
-      outdoors: false,
-      wellness: false,
-      sports: false,
-      tech: false,
-      travel: false,
-      volunteer: false,
+      art: "false",
+      children: "false",
+      drink: "false",
+      education: "false",
+      events: "false",
+      food: "false",
+      outdoors: "false",
+      wellness: "false",
+      sports: "false",
+      tech: "false",
+      travel: "false",
+      volunteer: "false",
  
     };
   }
@@ -36,7 +36,7 @@ class NewEventInterestedInScreen extends Component {
       currentUser: this.state.currentUser,
       eventInterests: {
         education: this.state.education,
-        outddors: this.state.outdoors,
+        outdoors: this.state.outdoors,
         sports: this.state.sports,
         events: this.state.events,
         food: this.state.food,
@@ -52,27 +52,6 @@ class NewEventInterestedInScreen extends Component {
 
       this.props.navigation.navigate('AddEventDetails', {...this.state})
   }
-  
-//   handleClickedInterests = () => {
-//     this.setState({
-//       currentUser: {...this.state.currentUser,
-//         eventInterests: {
-//           education: this.state.education,
-//           outddors: this.state.outdoors,
-//           sports: this.state.sports,
-//           events: this.state.events,
-//           food: this.state.food,
-//           wellness: this.state.wellness,
-//           children: this.state.children,
-//           travel: this.state.travel,
-//           volunteer: this.state.volunteer,
-//           art: this.state.art,
-//           tech: this.state.tech,
-//           drink: this.state.drink
-//         }
-//       }
-//     })
-//   }
 
 
   render() {
@@ -80,18 +59,18 @@ class NewEventInterestedInScreen extends Component {
     const{navigation}=this.props;
     const {state} = this.props.navigation;
     console.log('this.state from NewEventInterestedInScreen', this.state)
-    const education = !this.state.education? require('../images/transparentIcons/education.png') : require('../images/transparentIcons/educationYes.png') //education : educationYes;
-    const outdoors = !this.state.outdoors? require('../images/transparentIcons/outdoors.png') : require('../images/transparentIcons/outdoorsYes.png') 
-    const sports = !this.state.sports? require('../images/transparentIcons/sports.png') : require('../images/transparentIcons/sportsYes.png') // sports : sportsYes;
-    const events = !this.state.events? require('../images/transparentIcons/events.png') : require('../images/transparentIcons/eventsYes.png') // events : eventsYes;
-    const food = !this.state.food? require('../images/transparentIcons/food.png') : require('../images/transparentIcons/foodYes.png') // food : foodYes; 
-    const wellness = !this.state.wellness? require('../images/transparentIcons/wellness.png') : require('../images/transparentIcons/wellnessYes.png') // wellness : wellnessYes;
-    const children = !this.state.children? require('../images/transparentIcons/children.png') : require('../images/transparentIcons/childrenYes.png') // children: childrenYes;
-    const travel = !this.state.travel? require('../images/transparentIcons/travel.png') : require('../images/transparentIcons/travelYes.png') // travel: travelYes;
-    const volunteer = !this.state.volunteer? require('../images/transparentIcons/volunteer.png') : require('../images/transparentIcons/volunteerYes.png') // volunteer : volunteerYes;
-    const art = !this.state.art? require('../images/transparentIcons/art.png') : require('../images/transparentIcons/artYes.png') // art : artYes; 
-    const tech = !this.state.tech? require('../images/transparentIcons/tech.png') : require('../images/transparentIcons/techYes.png') // tech : techYes;
-    const drink = !this.state.drink? require('../images/transparentIcons/drink.png') : require('../images/transparentIcons/drinkYes.png') // drinks : drinksYes
+    const education = this.state.education === "false" ? require('../images/transparentIcons/education.png') : require('../images/transparentIcons/educationYes.png') //education : educationYes;
+    const outdoors = this.state.outdoors === "false"? require('../images/transparentIcons/outdoors.png') : require('../images/transparentIcons/outdoorsYes.png') 
+    const sports = this.state.sports === "false"? require('../images/transparentIcons/sports.png') : require('../images/transparentIcons/sportsYes.png') // sports : sportsYes;
+    const events = this.state.events === "false"? require('../images/transparentIcons/events.png') : require('../images/transparentIcons/eventsYes.png') // events : eventsYes;
+    const food = this.state.food === "false"? require('../images/transparentIcons/food.png') : require('../images/transparentIcons/foodYes.png') // food : foodYes; 
+    const wellness = this.state.wellness === "false"? require('../images/transparentIcons/wellness.png') : require('../images/transparentIcons/wellnessYes.png') // wellness : wellnessYes;
+    const children = this.state.children === "false"? require('../images/transparentIcons/children.png') : require('../images/transparentIcons/childrenYes.png') // children: childrenYes;
+    const travel = this.state.travel === "false"? require('../images/transparentIcons/travel.png') : require('../images/transparentIcons/travelYes.png') // travel: travelYes;
+    const volunteer = this.state.volunteer === "false"? require('../images/transparentIcons/volunteer.png') : require('../images/transparentIcons/volunteerYes.png') // volunteer : volunteerYes;
+    const art = this.state.art === "false"? require('../images/transparentIcons/art.png') : require('../images/transparentIcons/artYes.png') // art : artYes; 
+    const tech = this.state.tech === "false"? require('../images/transparentIcons/tech.png') : require('../images/transparentIcons/techYes.png') // tech : techYes;
+    const drink = this.state.drink === "false"? require('../images/transparentIcons/drink.png') : require('../images/transparentIcons/drinkYes.png') // drinks : drinksYes
 
     return (
       <View style={styles.container}>
@@ -104,11 +83,11 @@ class NewEventInterestedInScreen extends Component {
       
       <View style={styles.rowContainer}>
       <TouchableOpacity onPress={() => {
-          if(this.state.education === true){
-            this.setState({'education': false})
+          if(this.state.education === "true"){
+            this.setState({'education': "false"})
             // 
           } else {
-            this.setState({'education': true})
+            this.setState({'education': "true"})
             // 
           }
         }} style={styles.touchableOpacity}>
@@ -120,11 +99,11 @@ class NewEventInterestedInScreen extends Component {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => {
-         if(this.state.outdoors === true){
-          this.setState({'outdoors': false})
+         if(this.state.outdoors === "true"){
+          this.setState({'outdoors': "false"})
           // 
         } else {
-          this.setState({'outdoors': true})
+          this.setState({'outdoors': "true"})
           // 
         }        
         }}style={styles.touchableOpacity}>
@@ -135,11 +114,11 @@ class NewEventInterestedInScreen extends Component {
       </TouchableOpacity>
       
       <TouchableOpacity onPress={() => {
-        if(this.state.sports === true){
-          this.setState({'sports': false})
+        if(this.state.sports === "true"){
+          this.setState({'sports': "false"})
           // 
         } else {
-          this.setState({'sports': true})
+          this.setState({'sports': "true"})
           // 
         }
         }}style={styles.touchableOpacity}>
@@ -159,11 +138,11 @@ class NewEventInterestedInScreen extends Component {
 
       <View style={styles.rowContainer}>
       <TouchableOpacity onPress={() => {
-          if(this.state.events === true){
-          this.setState({'events': false})
+          if(this.state.events === "true"){
+          this.setState({'events': "false"})
           // 
         } else {
-          this.setState({'events': true})
+          this.setState({'events': "true"})
           // 
         }
         }}style={styles.touchableOpacity}>
@@ -174,11 +153,11 @@ class NewEventInterestedInScreen extends Component {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => {
-          if(this.state.food === true){
-          this.setState({'food': false})
+          if(this.state.food === "true"){
+          this.setState({'food': "false"})
           // 
         } else {
-          this.setState({'food': true})
+          this.setState({'food': "true"})
           // 
         }
         }}style={styles.touchableOpacity}>
@@ -189,11 +168,11 @@ class NewEventInterestedInScreen extends Component {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => {
-          if(this.state.wellness === true){
-          this.setState({'wellness': false})
+          if(this.state.wellness === "true"){
+          this.setState({'wellness': "false"})
           // 
         } else {
-          this.setState({'wellness': true})
+          this.setState({'wellness': "true"})
           // 
         }
         }}style={styles.touchableOpacity}>
@@ -213,11 +192,11 @@ class NewEventInterestedInScreen extends Component {
 
       <View style={styles.rowContainer}>
       <TouchableOpacity onPress={() => {
-         if(this.state.children === true){
-          this.setState({'children': false})
+         if(this.state.children === "true"){
+          this.setState({'children': "false"})
           // 
         } else {
-          this.setState({'children': true})
+          this.setState({'children': "true"})
           // 
         }
         }}style={styles.touchableOpacity}>
@@ -229,11 +208,11 @@ class NewEventInterestedInScreen extends Component {
       
       
       <TouchableOpacity onPress={() => {
-          if(this.state.travel === true){
-          this.setState({'travel': false})
+          if(this.state.travel === "true"){
+          this.setState({'travel': "false"})
           // 
         } else {
-          this.setState({'travel': true})
+          this.setState({'travel': "true"})
           // 
         }
         }}style={styles.touchableOpacity}>
@@ -245,11 +224,11 @@ class NewEventInterestedInScreen extends Component {
       
       
       <TouchableOpacity onPress={() => {
-        if(this.state.volunteer === true){
-          this.setState({'volunteer': false})
+        if(this.state.volunteer === "true"){
+          this.setState({'volunteer': "false"})
           // 
         } else {
-          this.setState({'volunteer': true})
+          this.setState({'volunteer': "true"})
           // 
         }
         }}style={styles.touchableOpacity}>
@@ -271,11 +250,11 @@ class NewEventInterestedInScreen extends Component {
 
       <View style={styles.rowContainer}>
       <TouchableOpacity onPress={() => {
-        if(this.state.art === true){
-          this.setState({'art': false})
+        if(this.state.art === "true"){
+          this.setState({'art': "false"})
           
         } else {
-          this.setState({'art': true})
+          this.setState({'art': "true"})
 
         }
         }}style={styles.touchableOpacity}>
@@ -286,11 +265,11 @@ class NewEventInterestedInScreen extends Component {
       </TouchableOpacity>
       
       <TouchableOpacity onPress={() => {
-         if(this.state.tech === true){
-          this.setState({'tech': false})
+         if(this.state.tech === "true"){
+          this.setState({'tech': "false"})
 
         } else {
-          this.setState({'tech': true})
+          this.setState({'tech': "true"})
 
         }
         }}style={styles.touchableOpacity}>
@@ -301,11 +280,11 @@ class NewEventInterestedInScreen extends Component {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => {
-         if(this.state.drink === true){
-          this.setState({'drink': false})
+         if(this.state.drink === "true"){
+          this.setState({'drink': "false"})
           
         } else {
-          this.setState({'drink': true})
+          this.setState({'drink': "true"})
           
         }
         }}style={styles.touchableOpacity}>

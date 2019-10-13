@@ -7,11 +7,14 @@ import {
   ScrollView,
   Linking,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  ImageBackground
 } from 'react-native';
 import {Dimensions } from "react-native";
 // import { WebBrowser } from 'expo-web-browser';
 import { Ionicons, Entypo } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -20,13 +23,76 @@ const eventPageWidth = Math.round(Dimensions.get('window').width*.90);
 
 export default class EventsScreen extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     const {params} = props.navigation.state
     this.state = {
-      currentUser: params.currentUser
+      currentUser: params.currentUser,
+      userNumber: 0,
+      postNumber: 0, 
+      loading: true
     };
   }
 
+  componentDidMount() {
+     this.fetchedPosts()
+  
+  }
+
+
+  fetchedPosts = async () => {
+    const fetchedPosts = await fetch(`http://capstoneeventapp.herokuapp.com/posts`, {
+      method: 'GET',
+      credentials: 'include',
+  })
+    const fetchedPostsJSON = await fetchedPosts.json()
+
+    let arrayNumber = (fetchedPostsJSON.length)-((fetchedPostsJSON.length)-this.state.userNumber)
+    let postNumber = (fetchedPostsJSON[arrayNumber].user.posts.length)-((fetchedPostsJSON[arrayNumber].user.posts.length)-this.state.postNumber)
+    this.setState({
+      allFetchedPosts: fetchedPostsJSON,
+      fetchedPost: fetchedPostsJSON[arrayNumber].user.posts[postNumber],
+      userNumber: this.state.userNumber++,
+      postNumber: this.state.postNumber++,
+      loading: false
+
+    })
+  }
+
+
+  // loadNextEvent = () => {
+  //   let arrayNumber = (fetchedPostsJSON.length)-((fetchedPostsJSON.length)-this.state.userNumber)
+  //   let postNumber = (fetchedPostsJSON[arrayNumber].user.posts.length)-((fetchedPostsJSON[arrayNumber].user.posts.length)-this.state.postNumber)
+  //   this.setState({
+  //     fetchedPost: fetchedPostsJSON[arrayNumber].user.posts[postNumber],
+  //     userNumber: this.state.userNumber++,
+  //     postNumber: this.state.postNumber++,
+  //     loading: false
+
+  // }
+
+  loopOverPosts = async () => {
+    let i;
+    for(i=0; i<this.state.allPosts.length; i++){
+      for(let x=0; x<this.state.allPosts[i].user.posts.length; x++){
+        this.setState({
+          creatorOfEvent: await this.state.allPosts[i].user,
+          eventDetais: await this.state.allPosts[i].user.posts[x],
+      })
+      console.log('i',i)
+      console.log('x',x)
+      break;
+      }
+    }
+  }
+  
+  getAPost = async ()=> {
+    
+    console.log(await this.state.creatorOfEvent)
+    console.log(await this.state.eventDetails)
+
+
+  }
+  
   render() {
     const {navigation} = this.props;
     const {state} = this.props.navigation;
@@ -34,7 +100,9 @@ export default class EventsScreen extends Component {
     // console.log("this.props.navigation.state Events,",this.props.navigation.state)
     // console.log("navigation.state.params.currentuser Events: ",  navigation.state.params.currentUser)
     // console.log("state.params from events page Events: ", state.params)
-
+    if(this.state.loading){
+      return <Text>'Loading...'</Text>
+    }
     return (
       <View style={styles.container}>
          <ScrollView  
@@ -45,53 +113,72 @@ export default class EventsScreen extends Component {
             marginRight: 0,
             marginleft: 0,
             alignItems: 'center', 
-            paddingBottom: 80,
+            // paddingBottom: -30,
         }}>
      
         <View style={styles.imageContainer}>
           {/* have to do an api call for posts and take the fisrt one. later it will be by soonest date */}
-        <Image 
-          // source={
-          //   {this.state.post.eventPhoto}
-          // }
-          style={styles.eventPhoto}    
-        />
+        <ImageBackground
+          source={
+            require('../images/pickAPhoto/outdoorsPhoto.jpeg')
+            // this.state.fetchedPost.eventPhoto
+          }
+          style={styles.eventPhoto}     
+        >
+          <LinearGradient 
+          colors={["#000000","#000000D9","#000000A6","#ffffff00","#ffffff00", "#ffffff00",]} 
+          start={{ x: 0, y: 1 }}
+          end={{ x: 0, y: 0 }}
+          
+          style={styles.linearGradient}/>
+
+        </ImageBackground>
         </View>
         <View style={styles.quickBubbleContainer}>
-          <Text style={styles.daysLeft}>Event Title</Text>
-          <Text style={styles.quickInfo}>When: {}</Text>
-          <Text style={styles.quickInfo}>Where: {}</Text>
-        </View>
+          {/* <Text style={styles.daysLeft}>Hiking Pikes Peak</Text>
+          <Text style={styles.quickInfo}>Pikes Peak Trail </Text>
+          <Text style={styles.quickInfo}>Friday, Aug 27th </Text>
+          <Text style={styles.quickInfo}>7:30 am </Text> */}
+          <Text style={styles.daysLeft}>{this.state.fetchedPost.name}</Text>
+          <Text style={styles.quickInfo}>{this.state.fetchedPost.location} </Text>
+          <Text style={styles.quickInfo}>{this.state.fetchedPost.date}</Text>
+          <Text style={styles.quickInfo}>{this.state.fetchedPost.time}</Text>
+          <TouchableOpacity style={styles.nextButtonContainer}>
+            <Image source = {require('../images/nextButton.png')}
+            style={styles.nextButton}/>
+          </TouchableOpacity>
+          </View>
         <View style={styles.mainInfo}>
         <View style={styles.interestRowsContainer}>
             <View style={styles.interestRows}>            
-              {this.state.education === true ? <Image source={require('../images/interestTags/educationTag.png')} style={styles.interestTag}/> : null}
-              {this.state.outdoors === true ? <Image source={require('../images/interestTags/outdoorsTag.png')} style={styles.interestTag}/> : null}
-              {this.state.sports === true ? <Image source={require('../images/interestTags/sportsTag.png')} style={styles.interestTag}/> : null}
-              {this.state.events === true ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
-              {this.state.educations === true ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
-              {this.state.food === true ? <Image source={require('../images/interestTags/foodTag.png')} style={styles.interestTag}/> : null}
-              {this.state.meditation === true ? <Image source={require('../images/interestTags/meditationTag.png')} style={styles.interestTag}/> : null}
-              {this.state.children === true ? <Image source={require('../images/interestTags/childrenTag.png')} style={styles.interestTag}/> : null}
-              {this.state.travel === true ? <Image source={require('../images/interestTags/travelTag.png')} style={styles.interestTag}/> : null}
-              {this.state.volunteer === true ? <Image source={require('../images/interestTags/volunteerTag.png')} style={styles.interestTag}/> : null}
-              {this.state.art === true ? <Image source={require('../images/interestTags/artTag.png')} style={styles.interestTag}/> : null}
-              {this.state.tech === true ? <Image source={require('../images/interestTags/techTag.png')} style={styles.interestTag}/> : null}
-              {this.state.drink === true ? <Image source={require('../images/interestTags/drinkTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.education === "true" ? <Image source={require('../images/interestTags/educationTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.outdoors === "true" ? <Image source={require('../images/interestTags/outdoorsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.sports === "true" ? <Image source={require('../images/interestTags/sportsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.events === "true" ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.educations === "true" ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.food === "true" ? <Image source={require('../images/interestTags/foodTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.wellness === "true" ? <Image source={require('../images/interestTags/meditationTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.children === "true" ? <Image source={require('../images/interestTags/childrenTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.travel === "true" ? <Image source={require('../images/interestTags/travelTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.volunteer === "true" ? <Image source={require('../images/interestTags/volunteerTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.art === "true" ? <Image source={require('../images/interestTags/artTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.tech === "true" ? <Image source={require('../images/interestTags/techTag.png')} style={styles.interestTag}/> : null}
+              {this.state.fetchedPost.drink === "true" ? <Image source={require('../images/interestTags/drinkTag.png')} style={styles.interestTag}/> : null}
             </View>
           </View>
-          <Text style={styles.aboutEvent}>
-          Lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </Text>
+          {/* <Text style={styles.aboutEvent}>
+          Come join our crew as we climb Pikes Peak. New hikers to advanced hikers are welcome, and we will help you reach the summit. We are crew of 20-30 year olds who love being in the outdoors, and enjoy meeting new people. Also, if you need suggestions on hiking gear, hit us up and we can help. It will be an early hike so don’t forget to set that alarm.
+
+          </Text> */}
+          
+          <Text style={styles.aboutEvent}>{this.state.fetchedPost.about}</Text>
+         
           <View style={styles.eventLinkRow}>
           <Entypo name="location-pin" size={32} style={styles.icon} onPress={this.handleOpenWithLinking}></Entypo>
             <Button
               icon= {<Entypo name="location-pin" size={32} style={styles.icon}></Entypo>}
               iconLeft
-              title="Event Location Link" //{} probably state.params or something
+              title="Pikes Peak Trailhead" //{} probably state.params or something
               onPress={this.handleOpenWithLinking}
               style={styles.button}
             />
@@ -151,7 +238,7 @@ export default class EventsScreen extends Component {
                 }}style={styles.touchableOpacity}>
               <Image 
                   source={
-                    require('../images/messagesThree.png') //link to host's first profile pic
+                    require('../images/profilePic.png') //link to host's first profile pic
                   }
                   style={styles.hostPic}    
                 />
@@ -166,7 +253,7 @@ export default class EventsScreen extends Component {
   }
   
   handleOpenWithLinking = () => {
-    Linking.openURL('https://google.com');  // {} this will have a variable with linking to the website
+    Linking.openURL('https://www.pikes-peak.com/hiking-pikes-peak-mountain/');  // {} this will have a variable with linking to the website
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -177,7 +264,7 @@ export default class EventsScreen extends Component {
       </TouchableOpacity>,
     headerRight: 
     // <TouchableOpacity onPress={() => {navigation.navigate('Profile',{...this.state})} } >
-    <TouchableOpacity onPress={() => {navigation.navigate()} } >
+    <TouchableOpacity onPress={() => {} } >
         <Image style={styles.headerRight} source={require('../images/messages.png')} />
       </TouchableOpacity>           
   });
@@ -195,6 +282,16 @@ const styles = StyleSheet.create({
     flex: 1,
     top: 30, 
     alignItems: 'center',
+  },
+  nextButtonContainer: {
+    width: eventPageWidth,
+    left: 270
+  },
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    backgroundColor: 'transparent'
   },
   interestRows: {
     width: eventPageWidth,
@@ -265,13 +362,13 @@ const styles = StyleSheet.create({
   },
   eventPhoto: {
     flex: 1,
+    width: eventPageWidth,
     overflow: 'hidden',
   },
   quickBubbleContainer: {
     width: eventPageWidth,
-    top: '-17%',
+    top: '-16%',
     height: '22%',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)'
   },
   quickInfo: {
     marginLeft: '5%',
@@ -333,6 +430,7 @@ const styles = StyleSheet.create({
   hostPic: {
     width: 80,
     height: 80,
+    borderRadius: 20
   },
   footer: {
     top: '-4%',
@@ -342,3 +440,32 @@ const styles = StyleSheet.create({
   }
 
 })
+
+
+// fetchedPosts = async () => {
+//   const fetchedPosts = await fetch(`http://capstoneeventapp.herokuapp.com/posts`, {
+//     method: 'GET',
+//     credentials: 'include',
+// })
+//   const fetchedPosts = await fetchedPosts.json()
+// }
+// loopOverPosts = async () => {
+//   let i;
+//   for(i=0; i<fetchedPosts.length; i++){
+//     for(let x=0; x<fetchedPosts[i].user.posts.length; x++){
+//       this.setState({
+//         creatorOfEvent: await fetchedPostsJson[i].user,
+//         eventDetais: await fetchedPostsJson[i].user.posts[x],
+//     })
+//     console.log('i',i)
+//     console.log('x',x)
+//     break;
+//     }
+//   }
+// }
+
+// getAPost = ()=> {
+//   this.fetchedPosts()
+//   this.loopOverPosts()
+
+// }

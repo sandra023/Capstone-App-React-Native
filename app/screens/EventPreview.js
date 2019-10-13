@@ -8,7 +8,8 @@ import {
   Linking,
   Button,
   ImageBackground,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 import {Dimensions } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -71,6 +72,7 @@ class EventPreviewScreen extends Component {
       if (addEventDetails.status === 200){    
           console.log("Successfuly added Event Post")
           console.log("after adding event post: ", await this.state.currentUser)
+        
           this.props.navigation.navigate('ProfileLandingPage',{currentUser: this.state.currentUser});
       } else {
           console.log("Ahh, that's not it!")
@@ -89,7 +91,7 @@ class EventPreviewScreen extends Component {
         date: this.state.date,
         time: this.state.time,
         about: this.state.about,
-        // eventPhoto: this.state.eventPhoto,
+        eventPhoto: this.state.eventPhoto,
         url: this.state.url,
         user: {"id": this.state.currentUser.id},
         education: this.state.education,
@@ -141,7 +143,7 @@ class EventPreviewScreen extends Component {
             marginRight: 0,
             marginleft: 0,
             alignItems: 'center', 
-            paddingBottom: 80,
+            // paddingBottom: 30,
         }}>
         <View style={styles.imageContainer}>
         <ImageBackground
@@ -166,19 +168,19 @@ class EventPreviewScreen extends Component {
         <View style={styles.mainInfo}>
           <View style={styles.interestRowsContainer}>
             <View style={styles.interestRows}>            
-              {this.state.education === true ? <Image source={require('../images/interestTags/educationTag.png')} style={styles.interestTag}/> : null}
-              {this.state.outdoors === true ? <Image source={require('../images/interestTags/outdoorsTag.png')} style={styles.interestTag}/> : null}
-              {this.state.sports === true ? <Image source={require('../images/interestTags/sportsTag.png')} style={styles.interestTag}/> : null}
-              {this.state.events === true ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
-              {this.state.educations === true ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
-              {this.state.food === true ? <Image source={require('../images/interestTags/foodTag.png')} style={styles.interestTag}/> : null}
-              {this.state.meditation === true ? <Image source={require('../images/interestTags/meditationTag.png')} style={styles.interestTag}/> : null}
-              {this.state.children === true ? <Image source={require('../images/interestTags/childrenTag.png')} style={styles.interestTag}/> : null}
-              {this.state.travel === true ? <Image source={require('../images/interestTags/travelTag.png')} style={styles.interestTag}/> : null}
-              {this.state.volunteer === true ? <Image source={require('../images/interestTags/volunteerTag.png')} style={styles.interestTag}/> : null}
-              {this.state.art === true ? <Image source={require('../images/interestTags/artTag.png')} style={styles.interestTag}/> : null}
-              {this.state.tech === true ? <Image source={require('../images/interestTags/techTag.png')} style={styles.interestTag}/> : null}
-              {this.state.drink === true ? <Image source={require('../images/interestTags/drinkTag.png')} style={styles.interestTag}/> : null}
+              {this.state.education === "true" ? <Image source={require('../images/interestTags/educationTag.png')} style={styles.interestTag}/> : null}
+              {this.state.outdoors === "true" ? <Image source={require('../images/interestTags/outdoorsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.sports === "true" ? <Image source={require('../images/interestTags/sportsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.events === "true" ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.educations === "true" ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
+              {this.state.food === "true" ? <Image source={require('../images/interestTags/foodTag.png')} style={styles.interestTag}/> : null}
+              {this.state.wellness === "true" ? <Image source={require('../images/interestTags/meditationTag.png')} style={styles.interestTag}/> : null}
+              {this.state.children === "true" ? <Image source={require('../images/interestTags/childrenTag.png')} style={styles.interestTag}/> : null}
+              {this.state.travel === "true" ? <Image source={require('../images/interestTags/travelTag.png')} style={styles.interestTag}/> : null}
+              {this.state.volunteer === "true" ? <Image source={require('../images/interestTags/volunteerTag.png')} style={styles.interestTag}/> : null}
+              {this.state.art === "true" ? <Image source={require('../images/interestTags/artTag.png')} style={styles.interestTag}/> : null}
+              {this.state.tech === "true" ? <Image source={require('../images/interestTags/techTag.png')} style={styles.interestTag}/> : null}
+              {this.state.drink === "true" ? <Image source={require('../images/interestTags/drinkTag.png')} style={styles.interestTag}/> : null}
             </View>
           </View>
           <Text style={styles.aboutEvent}>
@@ -364,14 +366,12 @@ const styles = StyleSheet.create({
   eventPhoto: {
     width: eventPageWidth,
     flex: 1,
-    // resizeMode: 'center',
-    // overflow: 'hidden',
+
   },
   quickBubbleContainer: {
     width: eventPageWidth,
     top: '-17%',
     height: '22%',
-    // backgroundColor: 'rgba(52, 52, 52, 0.7)'
   },
   quickInfo: {
     marginLeft: '5%',
@@ -457,63 +457,3 @@ const styles = StyleSheet.create({
 })
 
 
-
-
-
-// handleEventDetails = () => {
-//   this.setState({
-//     currentUser: {...this.state.currentUser.posts[
-    
-//     {name: this.state.name,
-//     location: this.state.location,
-//     date: this.state.date,
-//     time: this.state.time,
-//     about: this.state.about,
-
-//     education: this.state.education,
-//     outddors: this.state.outdoors,
-//     sports: this.state.sports,
-//     events: this.state.events,
-//     food: this.state.food,
-//     wellness: this.state.wellness,
-//     children: this.state.children,
-//     travel: this.state.travel,
-//     volunteer: this.state.volunteer,
-//     art: this.state.art,
-//     tech: this.state.tech,
-//     drink: this.state.drink,
-
-//     eventPhoto: this.state.eventPhoto
-
-//     }
-//     ]
-
-   
-//     }
-//   })
-// }
-
-    // let posts = await [...this.state.posts];
-    // posts.push({
-    //     name: this.state.name,
-    //     location: this.state.location,
-    //     date: this.state.date,
-    //     time: this.state.time,
-    //     about: this.state.about,
-    //     eventPhoto: this.state.eventPhoto,
-    //     url: this.state.url,
-    //     id: this.state.currentUser.id,
-    //     education: this.state.education,
-    //     outddors: this.state.outdoors,
-    //     sports: this.state.sports,
-    //     events: this.state.events,
-    //     food: this.state.food,
-    //     wellness: this.state.wellness,
-    //     children: this.state.children,
-    //     travel: this.state.travel,
-    //     volunteer: this.state.volunteer,
-    //     art: this.state.art,
-    //     tech: this.state.tech,
-    //     drink: this.state.drink,
-    
-    // })

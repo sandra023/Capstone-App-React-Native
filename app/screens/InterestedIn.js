@@ -93,18 +93,18 @@ handleClickedInterests = () => {
     const {state} = this.props.navigation;
     console.log("this.state.currentUser from InterestedIn: ", this.state.currentUser)
     // console.log("state.params.currentUser", state.params.currentUser)
-    const education = !this.state.education? require('../images/transparentIcons/education.png') : require('../images/transparentIcons/educationYes.png') //education : educationYes;
-    const outdoors = !this.state.outdoors? require('../images/transparentIcons/outdoors.png') : require('../images/transparentIcons/outdoorsYes.png') 
-    const sports = !this.state.sports? require('../images/transparentIcons/sports.png') : require('../images/transparentIcons/sportsYes.png') // sports : sportsYes;
-    const events = !this.state.events? require('../images/transparentIcons/events.png') : require('../images/transparentIcons/eventsYes.png') // events : eventsYes;
-    const food = !this.state.food? require('../images/transparentIcons/food.png') : require('../images/transparentIcons/foodYes.png') // food : foodYes; 
-    const wellness = !this.state.wellness? require('../images/transparentIcons/wellness.png') : require('../images/transparentIcons/wellnessYes.png') // wellness : wellnessYes;
-    const children = !this.state.children? require('../images/transparentIcons/children.png') : require('../images/transparentIcons/childrenYes.png') // children: childrenYes;
-    const travel = !this.state.travel? require('../images/transparentIcons/travel.png') : require('../images/transparentIcons/travelYes.png') // travel: travelYes;
-    const volunteer = !this.state.volunteer? require('../images/transparentIcons/volunteer.png') : require('../images/transparentIcons/volunteerYes.png') // volunteer : volunteerYes;
-    const art = !this.state.art? require('../images/transparentIcons/art.png') : require('../images/transparentIcons/artYes.png') // art : artYes; 
-    const tech = !this.state.tech? require('../images/transparentIcons/tech.png') : require('../images/transparentIcons/techYes.png') // tech : techYes;
-    const drink = !this.state.drink? require('../images/transparentIcons/drink.png') : require('../images/transparentIcons/drinkYes.png') // drinks : drinksYes
+    const education = this.state.education === 'false' ? require('../images/transparentIcons/education.png') : require('../images/transparentIcons/educationYes.png') //education : educationYes;
+    const outdoors = this.state.outdoors === 'false'  ? require('../images/transparentIcons/outdoors.png') : require('../images/transparentIcons/outdoorsYes.png') 
+    const sports = this.state.sports === 'false' ? require('../images/transparentIcons/sports.png') : require('../images/transparentIcons/sportsYes.png') // sports : sportsYes;
+    const events = this.state.events === 'false' ? require('../images/transparentIcons/events.png') : require('../images/transparentIcons/eventsYes.png') // events : eventsYes;
+    const food = this.state.food === 'false' ? require('../images/transparentIcons/food.png') : require('../images/transparentIcons/foodYes.png') // food : foodYes; 
+    const wellness = this.state.wellness === 'false' ? require('../images/transparentIcons/wellness.png') : require('../images/transparentIcons/wellnessYes.png') // wellness : wellnessYes;
+    const children = this.state.children === 'false' ? require('../images/transparentIcons/children.png') : require('../images/transparentIcons/childrenYes.png') // children: childrenYes;
+    const travel = this.state.travel === 'false' ? require('../images/transparentIcons/travel.png') : require('../images/transparentIcons/travelYes.png') // travel: travelYes;
+    const volunteer = this.state.volunteer === 'false' ? require('../images/transparentIcons/volunteer.png') : require('../images/transparentIcons/volunteerYes.png') // volunteer : volunteerYes;
+    const art = this.state.art === 'false' ? require('../images/transparentIcons/art.png') : require('../images/transparentIcons/artYes.png') // art : artYes; 
+    const tech = this.state.tech === 'false' ? require('../images/transparentIcons/tech.png') : require('../images/transparentIcons/techYes.png') // tech : techYes;
+    const drink = this.state.drink === 'false' ? require('../images/transparentIcons/drink.png') : require('../images/transparentIcons/drinkYes.png') // drinks : drinksYes
 
     return (
       <View style={styles.container}>

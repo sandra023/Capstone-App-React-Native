@@ -107,7 +107,7 @@ export default class LoginScreen extends Component {
                         returnKeyType="next" 
                         autoCapitalize="none" 
                         autoCorrect={false} 
-                        onChangeText={value => this.setState({'email': value})}
+                        onChangeText={value => this.setState({'email': value, 'loginClicked': false})}
                         placeholder = "email@address.com"
                     />
                     <TextInput 
@@ -115,7 +115,7 @@ export default class LoginScreen extends Component {
                         autoCapitalize="none" 
                         returnKeyType="go" 
                         autoCorrect={false} 
-                        onChangeText={value => this.setState({'password': value})}
+                        onChangeText={value => this.setState({'password': value, 'loginClicked': false})}
                         secureTextEntry= {true}
                         placeholder = "Password"
                     />

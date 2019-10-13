@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
-  ScrollView
+  ScrollView,
+  Alert
 } from 'react-native';
 import {Dimensions } from "react-native";
 
@@ -46,14 +47,19 @@ class EventEditPreviewScreen extends Component {
     };
   }
 
-
+  sendToConfirm = () => {
+    Alert.alert(
+      'Confirm Event',
+      'Please review your event. Then click "Post Event" at the bottom of the page.'
+    )
+    this.props.navigation.navigate('EventPreview',{...this.state})
+  }
 
 
   render() {
     const {navigate} = this.props.navigation
     const {state} = this.props.navigation;
     console.log('this.state from EditEventPreview: ', this.state)
-    console.log("eventPhoto: ",this.state.eventPhoto)
 
     return (
       <View style={styles.container}>
@@ -145,25 +151,25 @@ class EventEditPreviewScreen extends Component {
         />
          <View style={styles.interestRowsContainer}>
         <View style={styles.interestRows}>            
-          {this.state.education === true ? <Image source={require('../images/interestTags/educationTag.png')} style={styles.interestTag}/> : null}
-          {this.state.outdoors === true ? <Image source={require('../images/interestTags/outdoorsTag.png')} style={styles.interestTag}/> : null}
-          {this.state.sports === true ? <Image source={require('../images/interestTags/sportsTag.png')} style={styles.interestTag}/> : null}
-          {this.state.events === true ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
-          {this.state.educations === true ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
-          {this.state.food === true ? <Image source={require('../images/interestTags/foodTag.png')} style={styles.interestTag}/> : null}
-          {this.state.meditation === true ? <Image source={require('../images/interestTags/meditationTag.png')} style={styles.interestTag}/> : null}
-          {this.state.children === true ? <Image source={require('../images/interestTags/childrenTag.png')} style={styles.interestTag}/> : null}
-          {this.state.travel === true ? <Image source={require('../images/interestTags/travelTag.png')} style={styles.interestTag}/> : null}
-          {this.state.volunteer === true ? <Image source={require('../images/interestTags/volunteerTag.png')} style={styles.interestTag}/> : null}
-          {this.state.art === true ? <Image source={require('../images/interestTags/artTag.png')} style={styles.interestTag}/> : null}
-          {this.state.tech === true ? <Image source={require('../images/interestTags/techTag.png')} style={styles.interestTag}/> : null}
-          {this.state.drink === true ? <Image source={require('../images/interestTags/drinkTag.png')} style={styles.interestTag}/> : null}
+          {this.state.education === "true" ? <Image source={require('../images/interestTags/educationTag.png')} style={styles.interestTag}/> : null}
+          {this.state.outdoors === "true" ? <Image source={require('../images/interestTags/outdoorsTag.png')} style={styles.interestTag}/> : null}
+          {this.state.sports === "true" ? <Image source={require('../images/interestTags/sportsTag.png')} style={styles.interestTag}/> : null}
+          {this.state.events === "true" ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
+          {this.state.educations === "true" ? <Image source={require('../images/interestTags/eventsTag.png')} style={styles.interestTag}/> : null}
+          {this.state.food === "true" ? <Image source={require('../images/interestTags/foodTag.png')} style={styles.interestTag}/> : null}
+          {this.state.wellness === "true" ? <Image source={require('../images/interestTags/meditationTag.png')} style={styles.interestTag}/> : null}
+          {this.state.children === "true" ? <Image source={require('../images/interestTags/childrenTag.png')} style={styles.interestTag}/> : null}
+          {this.state.travel === "true" ? <Image source={require('../images/interestTags/travelTag.png')} style={styles.interestTag}/> : null}
+          {this.state.volunteer === "true" ? <Image source={require('../images/interestTags/volunteerTag.png')} style={styles.interestTag}/> : null}
+          {this.state.art === "true" ? <Image source={require('../images/interestTags/artTag.png')} style={styles.interestTag}/> : null}
+          {this.state.tech === "true" ? <Image source={require('../images/interestTags/techTag.png')} style={styles.interestTag}/> : null}
+          {this.state.drink === "true" ? <Image source={require('../images/interestTags/drinkTag.png')} style={styles.interestTag}/> : null}
         </View>
         </View>
         </View>
        
         
-      <TouchableOpacity onPress={() => navigate('EventPreview', {...this.state})} >
+      <TouchableOpacity onPress={() => this.sendToConfirm()} >
           <Text style={styles.continue} >Continue</Text>
         </TouchableOpacity>
         </ScrollView>
